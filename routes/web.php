@@ -26,7 +26,16 @@ $router->group(['prefix' => 'api'], function () use ($router){
 
 $router->group(['prefix' => 'api', 'middleware' => 'auth:api'], function () use ($router){
 
-    $router->get('/me', 'AuthController@me');
     $router->post('/logout', 'AuthController@logout');
+    $router->get('/profile', 'AuthController@me');
+
+    $router->get('/users','UsersController@index');
+    $router->get('/balance','UsersController@balance');
+
+    $router->post('/transactions/create','TransactionsController@store');
+    $router->get('/transactions','TransactionsController@index');
+    $router->get('/users/{id}/transactions','TransactionsController@userTransactions');
+    $router->get('/transactions/{id}','TransactionsController@show');
+    $router->get('/transactions/{id}/cancel','TransactionsController@cancel');
 
 });

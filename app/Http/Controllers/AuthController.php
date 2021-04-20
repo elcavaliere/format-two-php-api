@@ -180,13 +180,45 @@ class AuthController extends Controller
     }
 
     /**
+     * @SWG\Get(
+     *     path="/profile",
+     *     tags={"Authentification"},
+     *     operationId="profile",
+     *     summary="Authebticated user profile",
+     *     @SWG\Parameter(
+     *         name="Authorization",
+     *         description="Bearer",
+     *         in="header",
+     *         required=true,
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="User profile"
+     *    ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Bad request"
+     *    ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Resource Not Found"
+     *    ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Unauthorized"
+     *    )
+     * )
+     */
+
+    /**
      * Get the authenticated User.
      *
      * @return JsonResponse
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json(auth()->user()->load('profile'));
     }
 
     /**
