@@ -1,24 +1,32 @@
-# Lumen PHP Framework
+# Тестовое задание PHP
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://img.shields.io/packagist/v/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://img.shields.io/packagist/l/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
+## Исходные данные
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+Некий сервис, в нем есть пользователи, у них есть баланс лицевого счета.
+На вход сервис получает операция пополение или списания лицевого счета
+(в сервисе принято называть их транзакциями).
+Сервис обрабатывает около 100000 транзакции в день. 
 
-## Official Documentation
+В репозитарии имеются все нужные начальные данные
+  - Миграции
+  - Seed
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+### Разрешено
+ - использовать любые инструменты в рамках php или БД 
+ - добавлять, модифицировать таблицы 
+ - добавлять, модифицировать поля в таблицах.
 
-## Contributing
+## Требуется
+  - реализовать метод добавления транзакции.
+  - реализовать метод отмены транзакции.
+  - реализовать метод получения баланса пользователя.
+  - формат взаимодейсвие с сервисом в JSON; 
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Плюсом будет:
+  - объясните почему Вы сделали именно так;
+  - использование docker-compose;
+  - использованиен Swagger;
+  - использование PHPDoc;
+  - внимательность;
+  - чистота кода;
+  - наличие .env
