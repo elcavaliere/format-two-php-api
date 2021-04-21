@@ -14,7 +14,7 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return redirect('/api/v1');
 });
 
 $router->group(['prefix' => 'api'], function () use ($router){
@@ -30,7 +30,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth:api'], function () use 
     $router->get('/profile', 'AuthController@me');
 
     $router->get('/users','UsersController@index');
-    $router->get('/balance','UsersController@balance');
+    $router->get('/users/{id}/balance','UsersController@balance');
 
     $router->post('/transactions/create','TransactionsController@store');
     $router->get('/transactions','TransactionsController@index');

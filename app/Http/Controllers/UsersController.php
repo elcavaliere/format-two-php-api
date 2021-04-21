@@ -22,7 +22,7 @@ class UsersController extends Controller
      *     summary="Get users list",
      *     @SWG\Parameter(
      *         name="Authorization",
-     *         description="Bearer",
+     *         description="Bearer access_token ( Obtained after logging in )",
      *         in="header",
      *         required=true,
      *         type="string"
@@ -59,16 +59,23 @@ class UsersController extends Controller
 
     /**
      * @SWG\Get(
-     *     path="/balance",
+     *     path="/users/{id}/balance",
      *     tags={"Users"},
-     *     operationId="balance",
-     *     summary="Get authenticated user's balance",
+     *     operationId="user_balance",
+     *     summary="Get given user's balance",
      *     @SWG\Parameter(
      *         name="Authorization",
-     *         description="Bearer",
+     *         description="Bearer access_token ( Obtained after logging in )",
      *         in="header",
      *         required=true,
      *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="id",
+     *         description="User id",
+     *         in="path",
+     *         required=true,
+     *         type="integer"
      *     ),
      *     @SWG\Response(
      *         response="200",
@@ -91,12 +98,31 @@ class UsersController extends Controller
 
     /**
      * Get authenticated user's balance
+     *
+     * @param $id
      * @return JsonResponse
      */
-    public function balance()
+    public function balance($id)
     {
-        return response()->json([
-            'balance' => auth()->user()->balance
-        ]);
+        try {
+            if($user = User::find($id))
+            {
+                return response()->json([
+                    'balance' => $user->balance
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'user don\'t exist',
+                ],404);
+            }
+        }catch (\Exception $e)
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+                ,
+            ],$e->getCode());
+        }
     }
 }

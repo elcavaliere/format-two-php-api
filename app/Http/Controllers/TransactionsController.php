@@ -25,7 +25,7 @@ class TransactionsController extends Controller
      *     summary="Get transactions list",
      *     @SWG\Parameter(
      *         name="Authorization",
-     *         description="Bearer",
+     *         description="Bearer access_token ( Obtained after logging in )",
      *         in="header",
      *         required=true,
      *         type="string"
@@ -66,7 +66,7 @@ class TransactionsController extends Controller
      *     summary="Register new transaction",
      *     @SWG\Parameter(
      *         name="Authorization",
-     *         description="Bearer",
+     *         description="Bearer access_token ( Obtained after logging in )",
      *         in="header",
      *         required=true,
      *         type="string"
@@ -147,7 +147,7 @@ class TransactionsController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-            ]);
+            ],$e->getCode());
         }
     }
 
@@ -159,7 +159,7 @@ class TransactionsController extends Controller
      *     summary="Get a single transaction by id",
      *     @SWG\Parameter(
      *         name="Authorization",
-     *         description="Bearer",
+     *         description="Bearer access_token ( Obtained after logging in )",
      *         in="header",
      *         required=true,
      *         type="string"
@@ -218,7 +218,7 @@ class TransactionsController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-            ]);
+            ],$e->getCode());
         }
     }
 
@@ -230,7 +230,7 @@ class TransactionsController extends Controller
      *     summary="Cancel a single transaction by id",
      *     @SWG\Parameter(
      *         name="Authorization",
-     *         description="Bearer",
+     *         description="Bearer access_token ( Obtained after logging in )",
      *         in="header",
      *         required=true,
      *         type="string"
@@ -308,7 +308,7 @@ class TransactionsController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-            ]);
+            ],$e->getCode());
         }
     }
 
@@ -320,7 +320,7 @@ class TransactionsController extends Controller
      *     summary="Get all given user transactions",
      *     @SWG\Parameter(
      *         name="Authorization",
-     *         description="Bearer",
+     *         description="Bearer access_token ( Obtained after logging in )",
      *         in="header",
      *         required=true,
      *         type="string"
@@ -377,7 +377,7 @@ class TransactionsController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-            ]);
+            ],$e->getCode());
         }
     }
 }

@@ -187,7 +187,7 @@ class AuthController extends Controller
      *     summary="Authebticated user profile",
      *     @SWG\Parameter(
      *         name="Authorization",
-     *         description="Bearer",
+     *         description="Bearer access_token ( Obtained after logging in )",
      *         in="header",
      *         required=true,
      *         type="string"
@@ -229,7 +229,7 @@ class AuthController extends Controller
      *     summary="Log out user",
      *     @SWG\Parameter(
      *         name="Authorization",
-     *         description="Bearer",
+     *         description="Bearer access_token ( Obtained after logging in )",
      *         in="header",
      *         required=true,
      *         type="string"
