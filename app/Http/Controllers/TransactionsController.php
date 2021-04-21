@@ -51,6 +51,9 @@ class TransactionsController extends Controller
 
     public function index()
     {
+
+        //return all created transactions
+
         return response()->json([
            'transactions' => Transaction::with('user')
                             ->orderBy('created_at','desc')
@@ -115,6 +118,9 @@ class TransactionsController extends Controller
 
     public function store(Request $request)
     {
+
+        //Validate request data
+
         $this->validate($request,[
            'value' => 'required',
            'type' => 'required'
@@ -125,6 +131,8 @@ class TransactionsController extends Controller
             $description = $request->type == 1 ?
                 'Пополнение счета' : 'Списание от счета';
 
+            // Create new a new transaction for the authenticated user
+
             $transaction = Transaction::create([
                 'user_id' => auth()->user()->id,
                 'value' => $request->value,
@@ -132,9 +140,13 @@ class TransactionsController extends Controller
                 'description' => $description
             ]);
 
+            //Calculate the user's balance based on the type of transaction that has been refunded
+
             $newBalance = $transaction->type == 1 ? ($transaction->user->profile->balance + $transaction->value) : ($transaction->user->profile->balance - $transaction->value);
             $transaction->user->profile->balance = $newBalance;
             $transaction->user->profile->save();
+
+            //return the created transaction with success message
 
             return response()->json([
                 'status' => 'success',
@@ -198,8 +210,13 @@ class TransactionsController extends Controller
     {
         try {
 
+            //Check if the given id corresponds to that of at least one of the created transactions
+
             if($transaction = Transaction::find($id))
             {
+
+                //return the transaction with success message
+
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Transaction retrieved successfully',
@@ -207,6 +224,9 @@ class TransactionsController extends Controller
                 ]);
 
             }else{
+
+                //Returns a 404 error since the given id does not match that of any transaction
+
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Transaction don\'t exist',
@@ -224,7 +244,7 @@ class TransactionsController extends Controller
 
     /**
      * @SWG\Get(
-     *     path="/transactions/{id}/cancel",
+     *     path="/transactions/{id}/refund",
      *     tags={"Transactions"},
      *     operationId="transaction_cancel",
      *     summary="Cancel a single transaction by id",
@@ -265,23 +285,36 @@ class TransactionsController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function cancel($id)
+    public function refund($id)
     {
         try {
 
             $transaction = null;
 
+            //Check if the given id corresponds to that of at least one of the created transactions
+
             if($transaction = Transaction::find($id))
             {
+                //check if the transaction has not already been refunded
+
                 if($transaction->type != 3)
                 {
+
+                    //Calculate the user's balance based on the type of transaction that has been refunded
+
                     $newBalance = $transaction->type == 1 ? ($transaction->user->profile->balance - $transaction->value) : ($transaction->user->profile->balance + $transaction->value);
                     $transaction->user->profile->balance = $newBalance;
                     $transaction->user->profile->save();
 
+
+                    //Record the transaction as refund
+
                     $transaction->type = 3;
                     $transaction->description = 'Отмененная транзакция';
                     $transaction->save();
+
+
+                    //return the refunded transaction with success message
 
                     return response()->json([
                         'status' => 'success',
@@ -290,6 +323,9 @@ class TransactionsController extends Controller
                     ]);
 
                 }else{
+
+                    //Return an error message, because the transaction has already been refunded
+
                     return response()->json([
                         'status' => 'error',
                         'message' => 'Transaction already canceled',
@@ -297,6 +333,9 @@ class TransactionsController extends Controller
                 }
 
             }else{
+
+                //Returns a 404 error since the given id does not match that of any transaction
+
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Transaction don\'t exist',
@@ -359,14 +398,22 @@ class TransactionsController extends Controller
     public function userTransactions($id)
     {
         try {
+
+            //Check if the given id corresponds to that of at least one of the created users
+
             if($user = User::find($id))
             {
+                //return all user's transactions
+
                 return response()->json([
                     'transactions' => $user->transactions()
                         ->orderBy('created_at','desc')
                         ->get()
                 ]);
             }else{
+
+                //Returns a 404 error since the given id does not match that of any user
+
                 return response()->json([
                     'status' => 'error',
                     'message' => 'user don\'t exist',

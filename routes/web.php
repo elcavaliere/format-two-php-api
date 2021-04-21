@@ -36,6 +36,6 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth:api'], function () use 
     $router->get('/transactions','TransactionsController@index');
     $router->get('/users/{id}/transactions','TransactionsController@userTransactions');
     $router->get('/transactions/{id}','TransactionsController@show');
-    $router->get('/transactions/{id}/cancel','TransactionsController@cancel');
+    $router->get('/transactions/{id}/refund','TransactionsController@refund');
 
 });
